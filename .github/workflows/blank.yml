@@ -23,18 +23,21 @@ jobs:
         run: echo "pipe-build - Hello, world!"
   pipe-security:
     runs-on: ubuntu-latest
+    needs: pipe-build
     steps:
       - uses: actions/checkout@v4
       - name: Run a one-line script
         run: echo "pipe-security - Hello, world!"
   pipe-deployment:
     runs-on: ubuntu-latest
+    needs: pipe-security
     steps:
       - uses: actions/checkout@v4
       - name: Run a one-line script
         run: echo "pipe-deployment - Hello, world!"
   pipe-iac:
     runs-on: ubuntu-latest
+    needs: pipe-iac
     steps:
       - uses: actions/checkout@v4
       - name: Run a one-line script
