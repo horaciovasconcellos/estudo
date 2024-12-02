@@ -1,17 +1,14 @@
 name: Blank
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
     workflow_dispatch:  
 env:
-  AZURE_WEBAPP_NAME: your-app-name
+  AZURE_WEBAPP_NAME: app-horacio
   AZURE_WEBAPP_PACKAGE_PATH: horacio
-  NODE_VERSION: '14.x'
+  NODE_VERSION: '14.1'
 permissions:
   contents: read
 jobs:
@@ -23,6 +20,7 @@ jobs:
         run: echo "pipe-build - Hello, world!"
   pipe-security:
     runs-on: ubuntu-latest
+    # Depende da execu;cão do pipe-build
     needs: pipe-build
     steps:
       - uses: actions/checkout@v4
@@ -30,6 +28,7 @@ jobs:
         run: echo "pipe-security - Hello, world!"
   pipe-deployment:
     runs-on: ubuntu-latest
+    # Depende da execu;cão do pipe-security    
     needs: pipe-security
     steps:
       - uses: actions/checkout@v4
@@ -38,6 +37,7 @@ jobs:
   pipe-iac:
     runs-on: ubuntu-latest
     needs:  pipe-deployment
+    # Depende da execu;cão do pipe-deployment
     steps:
       - uses: actions/checkout@v4
       - name: Run a one-line script
