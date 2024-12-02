@@ -37,7 +37,7 @@ jobs:
         run: echo "pipe-deployment - Hello, world!"
   pipe-iac:
     runs-on: ubuntu-latest
-    needs: pipe-iac
+    needs:  pipe-deployment
     steps:
       - uses: actions/checkout@v4
       - name: Run a one-line script
