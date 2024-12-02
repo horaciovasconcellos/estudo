@@ -21,7 +21,7 @@ jobs:
   pipe-security:
     runs-on: ubuntu-latest
     environment:
-      - name: desenvolvimento
+      name: desenvolvimento
     # Depende da execu;cão do pipe-build
     needs: pipe-build
     steps:
