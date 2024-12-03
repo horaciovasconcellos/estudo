@@ -64,8 +64,8 @@ jobs:
         continue-on-error: true
         with:
           changelog_filename: CHANGELOG.md
-          committer_username: ${{ vars.CI_NAME }}
-          committer_email: ${{ vars.CI_EMAIL }}
+          #committer_username: ${{ vars.CI_NAME }}
+          #committer_email: ${{ vars.CI_EMAIL }}
           # Optional, only required when you want more customization
           # e.g: group your changelog by labels with custom titles,
           # different version prefix, pull request title and version number regex etc.
@@ -74,8 +74,8 @@ jobs:
           #config_file: changelog-ci-config.json
           # Optional, This will be used to configure git
           # defaults to `github-actions[bot]` if not provided.
-          #committer_username: 'test'
-          #committer_email: 'test@test.com'
+          committer_username: 'test'
+          committer_email: 'test@test.com'
           # Optional, only required when you want to run Changelog CI 
           # on an event other than `pull_request` event.
           # In this example `release_version` is fetched from `workflow_dispatch` events input.
