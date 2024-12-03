@@ -58,6 +58,7 @@ jobs:
           # e.g: group your changelog by labels with custom titles,
           # different version prefix, pull request title and version number regex etc.
           # config file can be in JSON or YAML format.
+          config_file: .github/changelog-ci-config.json
           #config_file: changelog-ci-config.json
           # Optional, This will be used to configure git
           # defaults to `github-actions[bot]` if not provided.
@@ -69,6 +70,5 @@ jobs:
           # You can use any other method to fetch the release version
           # such as environment variable or from output of another action
           #release_version: ${{ github.event.inputs.release_version }}
-          release_version: 1.0
           # Optional
           github_token: ${{ secrets.GITHUB_TOKEN }}
