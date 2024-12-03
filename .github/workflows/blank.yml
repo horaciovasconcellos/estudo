@@ -5,10 +5,7 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
-    inputs:
-      release_version:
-        description: 'Set Release Version'
-        required: true
+
 env:
   AZURE_WEBAPP_NAME: app-horacio
   AZURE_WEBAPP_PACKAGE_PATH: horacio
@@ -18,6 +15,9 @@ permissions:
 jobs:
   pipe-build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      discussions: write
     steps:
       - uses: actions/checkout@v4
       - name: Run a one-line script
@@ -51,14 +51,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run Changelog CI
-        uses: saadmk11/changelog-ci@v1.1.2  
+      - name: Get the latest tag
+        id: get_tag
+        run: |
+          git fetch --tags
+          LATEST_TAG=$(git describe --tags "$(git rev-list --tags --max-count=1)")
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+          
+      - name: Run Changelog CI
+        uses: saadmk11/changelog-ci@v1.1.2
+        id: changelog_ci
+        continue-on-error: true
         with:
           changelog_filename: CHANGELOG.md
+          committer_username: ${{ vars.CI_NAME }}
+          committer_email: ${{ vars.CI_EMAIL }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_version: ${{ steps.get_tag.outputs.latest_tag }}
           # Optional, only required when you want more customization
           # e.g: group your changelog by labels with custom titles,
           # different version prefix, pull request title and version number regex etc.
           # config file can be in JSON or YAML format.
-          config_file: .github/changelog-ci-config.json
+          #config_file: .github/changelog-ci-config.json
           #config_file: changelog-ci-config.json
           # Optional, This will be used to configure git
           # defaults to `github-actions[bot]` if not provided.
@@ -72,3 +86,10 @@ jobs:
           release_version: ${{ github.event.inputs.release_version }}
           # Optional
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: ${{ steps.changelog_ci.outputs.changelog }}
+          tag_name: ${{ steps.get_tag.outputs.latest_tag }}
+          generate_release_notes: true
