@@ -10,8 +10,7 @@ env:
   AZURE_WEBAPP_NAME: app-horacio
   AZURE_WEBAPP_PACKAGE_PATH: horacio
   NODE_VERSION: '14.1'
-permissions:
-  contents: read
+
 jobs:
   pipe-build:
     runs-on: ubuntu-latest
