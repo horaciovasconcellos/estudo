@@ -40,4 +40,16 @@ jobs:
     # Depende da execu;cão do pipe-deployment
     steps:
       - uses: actions/checkout@v4
+  pipe-doc:
+    runs-on: ubuntu-lates 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
+      - name: Get the latest tag
+        id: get_tag
+        run: |
+          git fetch --tags
+          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+          echo "latest_tag=$LATEST_TAG"
